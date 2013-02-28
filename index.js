@@ -17,7 +17,7 @@ var globalFlashPool = {}
  */
 
 var FlashSegment = function(name, keys) {
-  this.name = name
+	this.name = name
 	this.keys = keys
 	this.freelist = [0]
 	this.pointers = {}
@@ -40,17 +40,16 @@ FlashSegment.prototype.get = function(key, by) {
 
 /**
  * set a value within a number of keys.
- * @param keys
  * @param value
  */
 
-FlashSegment.prototype.set = function(keys, value) {
+FlashSegment.prototype.set = function(value) {
 	var i = this.freelist[0]
 	this.freelist = [i + 1]
 	globalFlashPool[this.name][i] = value
 
-	for (var j=0; j<keys.length; j++) {
-		var key = keys[j]
+	for (var j=0; j<this.keys.length; j++) {
+		var key = this.keys[j]
 		if (j === 0) {
 			this.defaultKey = key
 		}
@@ -80,7 +79,7 @@ var Export = {}
  * An shortcut of the 'new FlashSegment()' method.
  */
 
-Export.createFlash = function(name, keys) {
+Export.create = function(name, keys) {
 	if (name == 'createFlash') {
 		throw 'name conflict'
 	}
